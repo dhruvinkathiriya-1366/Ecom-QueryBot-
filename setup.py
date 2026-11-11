@@ -12,7 +12,6 @@ setup(
     version="0.1.0",
     author="Dhruvin Kathiriya",
     description="Ecom QueryBot Multi-Module Project",
-    packages=find_packages(where="src"),
-    package_dir={"": "src"},
+    packages=find_packages(include=["src", "src.*"]),
     install_requires=required_packages,
 )
