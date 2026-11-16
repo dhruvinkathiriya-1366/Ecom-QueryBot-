@@ -38,7 +38,7 @@ class DataConfig:
         self.test_size: float = TEST_SIZE
         self.random_state: int = RANDOM_STATE
 
-    def dataingession_config(self) -> DataIngestionConfig:
+    def data_ingestion_config(self) -> DataIngestionConfig:
         """
         Builds and returns the DataIngestionConfig entity containing
         all required paths and parameters for data ingestion.
@@ -61,9 +61,9 @@ class DataConfig:
             logger.error(f"Error while creating DataIngestionConfig: {e}")
             raise MyException(e, sys)
 
-    # Aliases to accommodate alternative conventions (with underscore and standard spelling)
-    def data_ingession_config(self) -> DataIngestionConfig:
-        return self.dataingession_config()
+    # Aliases to accommodate alternative conventions / spelling
+    def dataingession_config(self) -> DataIngestionConfig:
+        return self.data_ingestion_config()
 
-    def data_ingestion_config(self) -> DataIngestionConfig:
-        return self.dataingession_config()
+    def data_ingession_config(self) -> DataIngestionConfig:
+        return self.data_ingestion_config()

@@ -16,3 +16,6 @@ class DataIngestionConfig:
     test_size: float
     random_state: int
 
+
+# Backward compatibility alias
+DataIngessionConfig = DataIngestionConfig
