@@ -49,6 +49,7 @@ class DataIngestion:
         try:
             logger.info(f"Reading raw data from: {self.config.raw_data_path}")
             df = read_csv(self.config.raw_data_path)
+            df=df[['instruction','intent']]
             logger.info(f"Raw data successfully read. Dataset shape: {df.shape}")
             return df
         except Exception as e:
