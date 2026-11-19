@@ -12,14 +12,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from configuration.setting import TEST_SIZE, RANDOM_STATE
-from configuration.path import (
-    RAW_DATA_PATH,
-    DATA_INGESTION_DIR,
-    INGESTED_RAW_DATA_PATH,
-    TRAIN_DATA_PATH,
-    TEST_DATA_PATH,
-)
-from src.entity.config_entity import DataIngestionConfig
+from configuration.path import *
+from src.entity.config_entity import *
 from src.logger import logger
 from src.exception import MyException
 
@@ -29,14 +23,7 @@ class DataConfig:
     Configuration manager for creating configuration entities required by pipeline components.
     """
 
-    def __init__(self):
-        self.raw_data_path: Path = RAW_DATA_PATH
-        self.data_ingestion_dir: Path = DATA_INGESTION_DIR
-        self.ingested_raw_data_path: Path = INGESTED_RAW_DATA_PATH
-        self.train_data_path: Path = TRAIN_DATA_PATH
-        self.test_data_path: Path = TEST_DATA_PATH
-        self.test_size: float = TEST_SIZE
-        self.random_state: int = RANDOM_STATE
+      
 
     def data_ingestion_config(self) -> DataIngestionConfig:
         """
@@ -46,13 +33,13 @@ class DataConfig:
         try:
             logger.info("Initializing DataIngestionConfig...")
             data_ingestion_config = DataIngestionConfig(
-                raw_data_path=self.raw_data_path,
-                data_ingestion_dir=self.data_ingestion_dir,
-                ingested_raw_data_path=self.ingested_raw_data_path,
-                train_data_path=self.train_data_path,
-                test_data_path=self.test_data_path,
-                test_size=self.test_size,
-                random_state=self.random_state,
+                raw_data_path=RAW_DATA_PATH,
+                data_ingestion_dir=DATA_INGESTION_DIR,
+                ingested_raw_data_path=INGESTED_RAW_DATA_PATH,
+                train_data_path=TRAIN_DATA_PATH,
+                test_data_path=TEST_DATA_PATH,
+                test_size=TEST_SIZE,
+                random_state=RANDOM_STATE,
             )
             logger.info("DataIngestionConfig created successfully.")
             return data_ingestion_config
@@ -67,3 +54,17 @@ class DataConfig:
 
     def data_ingession_config(self) -> DataIngestionConfig:
         return self.data_ingestion_config()
+
+    def data_preprocessing_config(self) -> DataPreprocessingConfig:
+        try:
+            logger.info("Initializing DataPreprocessingConfig...")
+            data_preprocessing_config = DataPreprocessingConfig(
+                data_preprocessing_dir=DATA_PREPROCESSING_DIR,
+                preprocessed_train_data_path=PREPROCESSED_TRAIN_DATA_PATH,
+                preprocessed_test_data_path=PREPROCESSED_TEST_DATA_PATH
+            )
+            logger.info("DataPreprocessingConfig created successfully.")
+            return data_preprocessing_config
+        except Exception as e:
+            logger.error(f"Error while creating DataPreprocessingConfig: {e}")
+            raise MyException(e, sys)

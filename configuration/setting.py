@@ -11,6 +11,7 @@ RAW_DATA_FILE_NAME = "Bitext_Sample_Customer_Support_Training_Dataset_27K_respon
 
 ARTIFACTS_DIR_NAME = "artifacts"
 DATA_INGESTION_DIR_NAME = "data_ingestion"
+DATA_PREPROCESSING_DIR_NAME = "data_preprocessing"
 
 # Data Ingestion Output File Names
 RAW_DATA_COPY_FILE_NAME = "raw.csv"
@@ -21,3 +22,6 @@ TEST_DATA_FILE_NAME = "test.csv"
 TEST_SIZE = 0.2
 RANDOM_STATE = 42
 
+#Data Preprocessing
+PREPROCESSED_TRAIN_DATA_FILE_NAME = "preprocessed_train.csv"
+PREPROCESSED_TEST_DATA_FILE_NAME = "preprocessed_test.csv"
