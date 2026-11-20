@@ -89,11 +89,7 @@ class DataPreprocessing:
     def intent_preprocessing(self, df: DataFrame) -> DataFrame:
         return df
 
-    def initiate_data_preprocessing(
-        self,
-        train_path: Path = None,
-        test_path: Path = None,
-    ) -> tuple[DataFrame, DataFrame]:
+    def initiate_data_preprocessing(self) :
         """
         Initiates the data preprocessing pipeline:
         1. Ensures artifact directory exists.
@@ -107,39 +103,29 @@ class DataPreprocessing:
         """
         logger.info(">>>>> Starting Data Preprocessing Stage <<<<<")
         try:
-            train_path = train_path or self.ingestion_config.train_data_path
-            test_path = test_path or self.ingestion_config.test_data_path
+            raw_data_path = self.ingestion_config.ingested_raw_data_path
 
             # 1. Ensure artifact directory exists
             logger.info(f"Ensuring preprocessing artifact directory exists: {self.config.data_preprocessing_dir}")
             create_dir(self.config.data_preprocessing_dir)
 
             # 2. Read train and test data
-            logger.info(f"Loading train data from: {train_path}")
-            train_df = read_csv(train_path)
+            logger.info(f"Loading raw data from: {raw_data_path}")
+            raw_data_df = read_csv(raw_data_path)
 
-            logger.info(f"Loading test data from: {test_path}")
-            test_df = read_csv(test_path)
-        
             # 3. Apply preprocessing to both train and test sets
-            train_df = self.preprocessing(train_df)
-            test_df = self.preprocessing(test_df)
-        
+            clean_data_df = self.preprocessing(raw_data_df)
+           
             # 4. Save preprocessed datasets as CSV files in artifacts directory
             logger.info(
-                f"Saving preprocessed train data to: {self.config.preprocessed_train_data_path}"
+                f"Saving preprocessed raw data to: {self.config.preprocessed_data_path}"
             )
-            load_csv(self.config.preprocessed_train_data_path, train_df)
-        
-            logger.info(
-                f"Saving preprocessed test data to: {self.config.preprocessed_test_data_path}"
-            )
-            load_csv(self.config.preprocessed_test_data_path, test_df)
+            load_csv(self.config.preprocessed_data_path, clean_data_df)
 
             logger.info(">>>>> Data Preprocessing Stage Completed Successfully <<<<<")
 
             # Return the preprocessed DataFrames containing ['instruction', 'intent']
-            return train_df, test_df
+            return clean_data_df
 
         except Exception as e:
             logger.error(f"Error in initiate_data_preprocessing: {e}")
@@ -149,11 +135,10 @@ class DataPreprocessing:
 if __name__ == "__main__":
     try:
         preprocessing = DataPreprocessing()
-        train_df, test_df = preprocessing.initiate_data_preprocessing()
+        clean_data_df= preprocessing.initiate_data_preprocessing()
         print("Data Preprocessing successfully executed!")
-        print(f"Train DataFrame shape: {train_df.shape}")
-        print(f"Test DataFrame shape:  {test_df.shape}")
+        print(f"raw DataFrame shape: {clean_data_df.shape}")
         print("\nPreprocessed Train DataFrame sample (instruction & intent):")
-        print(train_df.head())
+        print(clean_data_df.head())
     except Exception as e:
         print(f"Data Preprocessing execution failed: {e}")
